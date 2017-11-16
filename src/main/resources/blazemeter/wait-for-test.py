@@ -17,7 +17,7 @@ if test_status != '':
         ci_status = client.checkCiStatus(masterId, headers)
         testStatus = ci_status
         if ci_status != 'success':
-            print "\nTest failed with status: `%s`" % ci_status
+            print "\nTest failed with status: `%s`\n\n" % ci_status
             sys.exit(1)
     else:
         task.setStatusLine(test_status)
