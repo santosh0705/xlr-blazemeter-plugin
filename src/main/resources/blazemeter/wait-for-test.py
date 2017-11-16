@@ -1,3 +1,4 @@
+import sys
 from blazemeter.blazemeter_client import BlazemeterClient
 
 params = {'url': blazemeterServer['url'],
@@ -12,12 +13,12 @@ client = BlazemeterClient(params, api_version)
 test_status = client.checkTestCompleteStatus(masterId, headers)
 if test_status != '':
     if test_status == 'ENDED':
-        print 'Test Completed'
+        print "\nTest Completed"
         ci_status = client.checkCiStatus(masterId, headers)
-        if ci_status != '':
-            testStatus = ci_status
-        else:
-            print "\nFailed to check test status whether it is passed or not."
+        testStatus = ci_status
+        if ci_status != 'success':
+            print "\nTest failed with status: `%s`" % ci_status
+            sys.exit(1)
     else:
         task.setStatusLine(test_status)
         task.schedule("blazemeter/wait-for-test.py")
